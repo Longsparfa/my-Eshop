@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { FaShoppingCart, FaTimes } from 'react-icons/fa'
 import { HiOutlineMenuAlt3 } from 'react-icons/hi'
+import { signOut } from 'firebase/auth'
+import { auth } from '../../firebase/config'
 
   
 
@@ -14,7 +16,7 @@ const logo = (
 </div>
 )
 
-const cart = (
+const cart = ( 
   <span className=''>
       <NavLink to="/cart" className={({isActive}) => (isActive ? 'active active::after flex ' : 'flex text-white relative hover:text-[#00a35c] ')} >
           Cart 
@@ -36,10 +38,18 @@ const Header = () => {
     setShowMenu(false)
   }
 
+  const logoutUser = () => {
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
+
   return (
     <>
-      <header className='w-[100%] bg-[#242424] text-white-100'>
-        <div className='w-[100%] h-[8rem] max-w-[1000px] m-auto p-[1rem] flex justify-between align-center relative'>
+      <header className=''>
+        <div className='w-[100%] h-[8rem] max-w-[1000px] mx-auto p-[1rem] flex justify-between items-center relative'>
            {logo}
 
            <nav className={`na ${showMenu ? 'translate-x-0' : 'translate-y-[-200%] '} `}>
@@ -61,13 +71,13 @@ const Header = () => {
 
             
               <span className='' onClick={hideMenu}>
-                <Link to='/login' className='block py-[5px] mx-[5px] border-b-2 border-b-solid border-b-[#333] text-white hover:text-[#00a35c] active:text-[rgba(255,69,0)]'>LogIn</Link>
-                <Link to='/register' className='block py-[5px] mx-[5px] border-b-2 border-b-solid border-b-[#333] text-white hover:text-[#00a35c] active:text-[rgba(255,69,0)]'>Register</Link>
-                <Link to='/order-history' className='block py-[5px] mx-[5px] border-b-2 border-b-solid border-b-[#333] text-white hover:text-[#00a35c] active:text-[rgba(255,69,0)]'>My Orders</Link>
+                <Link to='/login' className='block py-[5px] mx-[5px] border-b-2 border-b-solid border-b-[#333] text-white hover:text-[#00a35c] '>LogIn</Link>
+                <Link to='/register' className='block py-[5px] mx-[5px] border-b-2 border-b-solid border-b-[#333] text-white hover:text-[#00a35c] '>Register</Link>
+                <Link to='/order-history' className='block py-[5px] mx-[5px] border-b-2 border-b-solid border-b-[#333] text-white hover:text-[#00a35c] '>My Orders</Link>
                 
               </span>
               <span className='' onClick={hideMenu}>
-      <Link to="/cart" className='flex py-[10px] mx-[5px] text-white absolute hover:text-[#00a35c] active:text-[rgba(255,69,0)]'>
+      <Link to="/cart" className='flex py-[10px] mx-[5px] text-white absolute hover:text-[#00a35c] '>
           Cart 
           <FaShoppingCart size={20} />
           <p className='text-white absolute top-[-1rem] right-[-1rem] font-medium pt-[8px]'>0</p>
@@ -77,7 +87,7 @@ const Header = () => {
             
            </nav>
 
-           <nav className='w-[75%] flex justify-between mt-4 md:hidden'>
+           <nav className='w-[75%] flex justify-between md:hidden'>
 
             <ul className='flex justify-between' >
               <li className='my-0 mx-[5px]'><NavLink to='/' className={({isActive}) => (isActive ? 'active active::after ' : 'text-white hover:text-[#00a35c]' )}>Home</NavLink></li>
@@ -89,6 +99,7 @@ const Header = () => {
                 <NavLink to='/login' className={({isActive}) => (isActive ? 'active active::after ' : 'my-0 mx-[5px] text-white hover:text-[#00a35c]' )}>LogIn</NavLink>
                 <NavLink to='/register' className={({isActive}) => (isActive ? 'active active::after ' : 'my-0 mx-[5px] text-white hover:text-[#00a35c]' )}>Register</NavLink>
                 <NavLink to='/order-history' className={({isActive}) => (isActive ? 'active active::after ' : 'my-0 mx-[5px] text-white hover:text-[#00a35c] ' )}>My Orders</NavLink>
+                <NavLink to='/' className='my-0 mx-[5px] text-white hover:text-[#00a35c]' onClick={logoutUser}>Log Out</NavLink>
               </span>
               {cart}
             </div>
