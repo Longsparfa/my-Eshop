@@ -2,19 +2,19 @@ import { useState } from 'react'
 import { FaGoogle } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 import Card from '../../components/card/Card'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import { auth } from '../../firebase/config'
-import Loader from '../../components/loader/Loader'
+import Loader from '../../components/loader/loader'
 import { ToastContainer, toast } from 'react-toastify';
 
 
 
 const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoading, setIsloading] = useState(false)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsloading] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
 
 const loginUser = (e) => {
@@ -56,7 +56,7 @@ const loginUser = (e) => {
             </div>
             <p className='text-center m-[1rem]'>--- or ---</p>
           </form>
-          <button className='--btn bg-[#00a35c] text-white --btn-block'><FaGoogle className='pr-1'/> Login With Google</button>
+          <button className='--btn bg-[#00a35c] text-white --btn-block' onClick={signInWithGoogle}><FaGoogle className='pr-1'/> Login With Google</button>
           <span className='flex justify-center items-center mt-[1rem]'>
             <p>Don't have an account?</p>
             <Link to="/register" className='font-bold pl-2'>Register</Link>
@@ -66,6 +66,20 @@ const loginUser = (e) => {
       </section>
     </>
   )
+}
+
+//login with Google
+const provider = new GoogleAuthProvider();
+const signInWithGoogle = () => {
+  signInWithPopup(auth, provider)
+  .then((result) => {
+    const user = result.user;
+    toast.success('sucessfully loggedIn')
+    navigate('/')
+  }).catch((error) => {
+    toast.error(error.message)
+   
+  });
 }
 
 export default Login

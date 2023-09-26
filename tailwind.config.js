@@ -11,6 +11,23 @@ module.exports = {
       'md': {'max': '768px'},
       'sm': {'max': '640px'},
   },
+  extend: {
+    keyframes: {
+      slideUp: {
+        '0%': {
+          visibility: 'visible',
+          top: '23rem'
+        },
+        '100%': {
+          visibility: 'visible',
+          top: '17rem',
+        },
+      }
+    },
+    animation: {
+      slideUp: 'slideUp 1s ease 0.5s',
+    }
+  }
 },
   plugins: [],
 }
